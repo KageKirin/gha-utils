@@ -1,0 +1,8 @@
+name: install-version-tools
+runs:
+  using: composite
+  steps:
+  - uses: kagekirin/csproj-version/.github/actions/install
+  - uses: kagekirin/csproj-dependency-version/.github/actions/install
+  - uses: kagekirin/node-package-version/.github/actions/install
+  - uses: kagekirin/unity-bundle-version/.github/actions/install
