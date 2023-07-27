@@ -1,0 +1,9 @@
+name: install-prerequisites
+runs:
+  using: composite
+  steps:
+  - name: Install prequisites
+    shell: bash
+    run: |
+      sudo apt-get update -y -qq
+      sudo apt-get install -y fd-find ripgrep curl wget sed moreutils jq apt-utils zsh
