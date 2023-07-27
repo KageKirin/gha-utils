@@ -1,0 +1,15 @@
+name: checkout-repo
+inputs:
+  repositoryUrl:
+    required: true
+  repositoryPath:
+    required: false
+    default: ./repo
+runs:
+  using: composite
+  steps:
+  - name: Clone ${{ inputs.repositoryUrl }} as ${{ inputs.repositoryPath }}
+    shell: bash
+    run: |
+      git clone ${{ inputs.repositoryUrl }} ${{ inputs.repositoryPath }}
+      git -C ${{ inputs.repositoryPath }} fetch --tags
