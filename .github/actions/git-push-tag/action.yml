@@ -1,0 +1,17 @@
+name: push-tag
+inputs:
+  repositoryUrl:
+    description: URL of git repo to push to (name or URL, e.g 'https://${{ secrets.GITHUB_TOKEN }}@github.com/owner/repo.git')
+    required: true
+  branch:
+    description: repo branch to push to
+    required: false
+    default: main
+runs:
+  using: composite
+  steps:
+  - name: Push tag
+    run: |-
+      git push --verbose --tags ${{ inputs.description }}
+      git push --verbose --follow-tags ${{ inputs.description }} ${{ inputs.branch }}
+    shell: bash
