@@ -14,7 +14,7 @@ runs:
   - name: Clone ${{ inputs.repositoryUrl }} as ${{ inputs.repositoryPath }}
     shell: bash
     run: |
-      if [[ ! -d {{ inputs.repositoryPath }} ]]; then
+      if [[ ! -d ${{ inputs.repositoryPath }} ]]; then
         git clone -b ${{ inputs.repositoryBranch }} ${{ inputs.repositoryUrl }} ${{ inputs.repositoryPath }}
       else
         git -C ${{ inputs.repositoryPath }} fetch
