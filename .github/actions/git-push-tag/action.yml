@@ -1,7 +1,7 @@
 name: push-tag
 inputs:
   repositoryUrl:
-    description: URL of git repo to push to (name or URL, e.g 'https://${{ secrets.GITHUB_TOKEN }}@github.com/owner/repo.git')
+    description: URL of git repo to push to (name or URL, e.g 'https://secrets.GITHUB_TOKEN@github.com/owner/repo.git')
     required: true
   baseBranch:
     description: repo base branch to push to
