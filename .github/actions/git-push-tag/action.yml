@@ -17,8 +17,7 @@ runs:
   - name: Push tag
     shell: bash
     run: |-
-      git push -u --verbose --tags ${{ inputs.repositoryUrl }}
-      git push -u --verbose --follow-tags ${{ inputs.repositoryUrl }} ${{ inputs.mergeBranch }}
+      git push -u --verbose --tags ${{ inputs.repositoryUrl }} ${{ inputs.mergeBranch }}
   - name: Create Pull Request
     shell: bash
     run: |-
