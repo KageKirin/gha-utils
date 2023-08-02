@@ -26,10 +26,10 @@ runs:
     env:
       GH_TOKEN: ${{ github.token }}
     run: |-
+      gh pr create --base ${{ inputs.baseBranch }} --fill
       j="$(gh pr status --json title,number,headRefName,body)"
       num=$(jq -r .currentBranch.number <<< $j)
       title="$(jq -r .currentBranch.title <<< $j) ($(jq -r .currentBranch.headRefName <<< $j)) [#$num]"
-      gh pr create --base ${{ inputs.baseBranch }} --fill
       gh pr edit -t "${title}"
   - name: Create Pull Request
     shell: bash
