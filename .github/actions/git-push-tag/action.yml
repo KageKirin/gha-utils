@@ -19,7 +19,7 @@ runs:
     env:
       GH_TOKEN: ${{ github.token }}
     run: |-
-      git push -u --verbose --tags ${{ inputs.repositoryUrl }} ${{ inputs.mergeBranch }}
+      git push -u --force --verbose --follow-tags ${{ inputs.repositoryUrl }} ${{ inputs.mergeBranch }}
   - name: Create Pull Request
     shell: bash
     env:
