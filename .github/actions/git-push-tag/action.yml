@@ -3,11 +3,7 @@ inputs:
   repositoryUrl:
     description: URL of git repo to push to (name or URL, e.g 'https://secrets.GITHUB_TOKEN@github.com/owner/repo.git')
     required: true
-  baseBranch:
-    description: repo base branch to push to
-    required: false
-    default: main
-  mergeBranch:
+  branch:
     description: repo branch to push to
     required: false
     default: main
@@ -19,21 +15,5 @@ runs:
     env:
       GH_TOKEN: ${{ github.token }}
     run: |-
-      git push -u --force --verbose ${{ inputs.repositoryUrl }} ${{ inputs.mergeBranch }}
-      git push -u --force --verbose --follow-tags ${{ inputs.repositoryUrl }} ${{ inputs.mergeBranch }}
-  - name: Create Pull Request
-    shell: bash
-    env:
-      GH_TOKEN: ${{ github.token }}
-    run: |-
-      gh pr create --base ${{ inputs.baseBranch }} --head ${{ inputs.mergeBranch }} --fill
-      j="$(gh pr status --json title,number,headRefName,body)"
-      num=$(jq -r .currentBranch.number <<< $j)
-      title="$(jq -r .currentBranch.title <<< $j) ($(jq -r .currentBranch.headRefName <<< $j)) [#$num]"
-      gh pr edit -t "${title}"
-  - name: Create Pull Request
-    shell: bash
-    env:
-      GH_TOKEN: ${{ github.token }}
-    run: |-
-      gh pr merge --rebase --delete-branch
+      git push -u --force --verbose ${{ inputs.repositoryUrl }} ${{ inputs.branch }}
+      git push -u --force --verbose --follow-tags ${{ inputs.repositoryUrl }} ${{ inputs.branch }}
