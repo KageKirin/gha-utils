@@ -12,12 +12,8 @@ runs:
   using: composite
   steps:
   - name: Clone ${{ inputs.repositoryUrl }} as ${{ inputs.repositoryPath }}
-    shell: bash
-    run: |
-      if [[ ! -d ${{ inputs.repositoryPath }} ]]; then
-        git clone -b ${{ inputs.repositoryBranch }} ${{ inputs.repositoryUrl }} ${{ inputs.repositoryPath }}
-      else
-        git -C ${{ inputs.repositoryPath }} fetch
-        git -C ${{ inputs.repositoryPath }} reset --hard origin/${{ inputs.repositoryBranch }}
-      fi
-      git -C ${{ inputs.repositoryPath }} fetch --tags
+    uses: kagekirin/gha-utils/.github/actions/git-checkout-tags@main
+    with:
+      repository: ${{ inputs.repositoryUrl }}
+      path: ${{ inputs.repositoryPath }}
+      ref: ${{ inputs.repositoryBranch }}
