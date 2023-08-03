@@ -89,7 +89,7 @@ runs:
   using: composite
   steps:
   # forward everything to actions/checkout
-  - uses: actions/checkout@3.5.0
+  - uses: actions/checkout@v3.5.0
     with:
       repository: ${{ inputs.repository }}
       ref: ${{ inputs.ref }}
