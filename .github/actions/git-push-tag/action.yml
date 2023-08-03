@@ -1,6 +1,6 @@
 name: push-tag
 inputs:
-  repositoryUrl:
+  remote:
     description: URL of git repo to push to (name or URL, e.g 'https://secrets.GITHUB_TOKEN@github.com/owner/repo.git')
     required: true
   branch:
@@ -15,5 +15,5 @@ runs:
     env:
       GH_TOKEN: ${{ github.token }}
     run: |-
-      git push -u --force --verbose ${{ inputs.repositoryUrl }} ${{ inputs.branch }}
-      git push -u --force --verbose --follow-tags ${{ inputs.repositoryUrl }} ${{ inputs.branch }}
+      git push -u --force --verbose ${{ inputs.remote }} ${{ inputs.branch }}
+      git push -u --force --verbose --follow-tags ${{ inputs.remote }} ${{ inputs.branch }}
