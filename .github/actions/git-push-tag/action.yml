@@ -15,5 +15,5 @@ runs:
     env:
       GH_TOKEN: ${{ github.token }}
     run: |-
-      git push -u --force --verbose ${{ inputs.remote }} ${{ inputs.branch }}
-      git push -u --force --verbose --follow-tags ${{ inputs.remote }} ${{ inputs.branch }}
+      git push --force-with-lease --verbose ${{ inputs.remote }} ${{ inputs.branch }}
+      git push --force-with-lease --verbose --follow-tags ${{ inputs.remote }} ${{ inputs.branch }}
