@@ -17,3 +17,4 @@ runs:
     run: |-
       git push --force-with-lease --verbose ${{ inputs.remote }} ${{ inputs.branch }}
       git push --force-with-lease --verbose --follow-tags ${{ inputs.remote }} ${{ inputs.branch }}
+      git push --force-with-lease --verbose --tags ${{ inputs.remote }}
