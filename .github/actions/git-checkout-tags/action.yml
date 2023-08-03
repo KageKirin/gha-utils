@@ -109,4 +109,10 @@ runs:
       github-server-url: ${{ inputs.github-server-url }}
   - name: Fetch tags
     shell: bash
-    run: git -C ${{ inputs.path }} fetch --tags
+    run: |-
+      repoPath=${{ inputs.path }}
+      if [[ -z "${repoPath}" ]]; then
+        git fetch --tags
+      else
+        git -C ${repoPath} fetch --tags
+      fi
