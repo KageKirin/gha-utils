@@ -1,0 +1,30 @@
+name: npm-patch-string
+inputs:
+  spec:
+    description: package spec (path to package.json)
+    type: string
+    required: false
+    default: package.json
+  element:
+    description: name of string element to replace (including '.')
+    type: string
+    required: true
+  value:
+    description: value to replace element with
+    type: string
+    required: true
+runs:
+  using: composite
+  steps:
+  - name: Before patch
+    shell: bash
+    run: cat ${{ inputs.spec }}
+  - name: Patch
+    id: patch
+    shell: bash
+    run: |-
+      contents="$(jq --arg v '${{ inputs.value }}' '${{ inputs.element }} = $v' ${{ inputs.spec }})"
+      echo -E "${contents}" > ${{ inputs.spec }}
+  - name: After patch
+    shell: bash
+    run: cat ${{ inputs.spec }}
