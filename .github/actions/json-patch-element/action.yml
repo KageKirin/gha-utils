@@ -1,0 +1,33 @@
+name: npm-patch-element
+inputs:
+  spec:
+    description: package spec (path to package.json)
+    type: string
+    required: false
+    default: package.json
+  element:
+    description: name of element to replace (including '.')
+    type: string
+    required: true
+  patchfile:
+    description: patchfile for package spec to overwrite (another JSON file)
+    type: string
+    required: true
+runs:
+  using: composite
+  steps:
+  - name: Show patch
+    shell: bash
+    run: cat ${{ inputs.patchfile }}
+  - name: Before patch
+    shell: bash
+    run: cat ${{ inputs.spec }}
+  - name: Patch
+    id: patch
+    shell: bash
+    run: |-
+      contents="$(jq --argjson v "$(cat ${{ inputs.patchfile }})" '${{ inputs.element }} = $v' ${{ inputs.spec }})"
+      echo -E "${contents}" > ${{ inputs.spec }}
+  - name: After patch
+    shell: bash
+    run: cat ${{ inputs.spec }}
