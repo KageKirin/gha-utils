@@ -1,5 +1,10 @@
 name: push-tag
 inputs:
+  path:
+    description: path from where to run the actions
+    type: string
+    required: false
+    default: ${{ github.workspace }}
   remote:
     description: URL of git repo to push to (name or URL, e.g 'https://secrets.GITHUB_TOKEN@github.com/owner/repo.git')
     required: true
@@ -15,6 +20,8 @@ runs:
     env:
       GH_TOKEN: ${{ github.token }}
     run: |-
+      pushd ${{ inputs.path }}
       git push --force-with-lease --verbose ${{ inputs.remote }} ${{ inputs.branch }}
       git push --force-with-lease --verbose --follow-tags ${{ inputs.remote }} ${{ inputs.branch }}
       git push --force-with-lease --verbose --tags ${{ inputs.remote }}
+      popd
