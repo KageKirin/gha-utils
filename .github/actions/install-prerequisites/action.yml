@@ -4,6 +4,16 @@ runs:
   steps:
   - name: Install prequisites
     shell: bash
-    run: |
+    run: |-
       sudo apt-get update -y -qq
-      sudo apt-get install -y fd-find ripgrep curl wget sed moreutils jq apt-utils zsh
+      sudo apt-get install -y fd-find ripgrep curl wget sed moreutils jq xq apt-utils zsh
+  - name: Verify installation
+    shell: bash
+    run: |-
+      which fdfind
+      which rg
+      which curl
+      which wget
+      which sed
+      which jq
+      which xq
