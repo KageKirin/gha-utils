@@ -6,7 +6,7 @@ inputs:
     required: false
     default: ${{ github.workspace }}
   spec:
-    description: package spec (path to package.json)
+    description: package spec (path to json file)
     type: string
     required: false
     default: package.json
