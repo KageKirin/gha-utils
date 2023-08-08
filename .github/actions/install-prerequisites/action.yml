@@ -7,7 +7,7 @@ runs:
     run: |-
       sudo apt-get update -y -qq
       sudo apt-get install -y fd-find ripgrep curl wget sed moreutils jq apt-utils zsh snapd
-      sudo snap install xq
+      sudo snap install yq
   - name: Verify installation
     shell: bash
     run: |-
@@ -17,4 +17,5 @@ runs:
       which wget
       which sed
       which jq
+      which yq
       which xq
