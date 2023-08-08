@@ -6,7 +6,8 @@ runs:
     shell: bash
     run: |-
       sudo apt-get update -y -qq
-      sudo apt-get install -y fd-find ripgrep curl wget sed moreutils jq xq apt-utils zsh
+      sudo apt-get install -y fd-find ripgrep curl wget sed moreutils jq apt-utils zsh snapd
+      sudo snap install xq
   - name: Verify installation
     shell: bash
     run: |-
