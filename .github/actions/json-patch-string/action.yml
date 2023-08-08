@@ -1,7 +1,12 @@
 name: npm-patch-string
 inputs:
+  path:
+    description: path from where to run the actions
+    type: string
+    required: false
+    default: ${{ github.workspace }}
   spec:
-    description: package spec (path to package.json)
+    description: package spec (path to json file)
     type: string
     required: false
     default: package.json
@@ -18,13 +23,21 @@ runs:
   steps:
   - name: Before patch
     shell: bash
-    run: cat ${{ inputs.spec }}
+    run: |-
+      pushd ${{ inputs.path }}
+      cat ${{ inputs.spec }}
+      popd
   - name: Patch
     id: patch
     shell: bash
     run: |-
+      pushd ${{ inputs.path }}
       contents="$(jq --arg v '${{ inputs.value }}' '${{ inputs.element }} = $v' ${{ inputs.spec }})"
       echo -E "${contents}" > ${{ inputs.spec }}
+      popd
   - name: After patch
     shell: bash
-    run: cat ${{ inputs.spec }}
+    run: |-
+      pushd ${{ inputs.path }}
+      cat ${{ inputs.spec }}
+      popd

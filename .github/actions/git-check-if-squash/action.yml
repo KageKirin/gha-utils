@@ -1,10 +1,17 @@
 name: check-if-squash
+inputs:
+  path:
+    description: path from where to run the actions
+    type: string
+    required: false
+    default: ${{ github.workspace }}
 runs:
   using: composite
   steps:
   - name: Check if triggered by squash commit
     shell: bash
     run: |-
+      pushd ${{ inputs.path }}
       head_commit=$(git --no-pager log --pretty=%s -n 1 HEAD)
       last_squash=$(git --no-pager log --pretty=%s HEAD^{/#} -n 1)
       echo "HEAD commit: $head_commit"
@@ -16,3 +23,4 @@ runs:
         echo "No squash commit. Suspending job here."
         gh run cancel ${{ github.run_id }}
       fi
+      popd

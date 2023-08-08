@@ -1,7 +1,12 @@
 name: npm-patch-element
 inputs:
+  path:
+    description: path from where to run the actions
+    type: string
+    required: false
+    default: ${{ github.workspace }}
   spec:
-    description: package spec (path to package.json)
+    description: package spec (path to json file)
     type: string
     required: false
     default: package.json
@@ -18,16 +23,27 @@ runs:
   steps:
   - name: Show patch
     shell: bash
-    run: cat ${{ inputs.patchfile }}
+    run: |-
+      pushd ${{ inputs.path }}
+      cat ${{ inputs.patchfile }}
+      popd
   - name: Before patch
     shell: bash
-    run: cat ${{ inputs.spec }}
+    run: |-
+      pushd ${{ inputs.path }}
+      cat ${{ inputs.spec }}
+      popd
   - name: Patch
     id: patch
     shell: bash
     run: |-
+      pushd ${{ inputs.path }}
       contents="$(jq --argjson v "$(cat ${{ inputs.patchfile }})" '${{ inputs.element }} = $v' ${{ inputs.spec }})"
       echo -E "${contents}" > ${{ inputs.spec }}
+      popd
   - name: After patch
     shell: bash
-    run: cat ${{ inputs.spec }}
+    run: |-
+      pushd ${{ inputs.path }}
+      cat ${{ inputs.spec }}
+      popd
