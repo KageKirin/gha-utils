@@ -1,0 +1,53 @@
+name: actions/tag-generate
+inputs:
+  version:
+    description: product version/tag
+    required: true
+  add-revcount:
+    description: whether to include revcount
+    required: false
+    default: false
+  prerelease:
+    description: version '-prerelease.num' part
+    required: false
+    default: ''
+  buildmeta:
+    description: version '+buildmeta.text' part
+    required: false
+    default: ''
+outputs:
+  version:
+    description: updated tag/version
+    value: ${{ steps.generate-tag.outputs.version }}
+runs:
+  using: composite
+  steps:
+  - id: get-revcount
+    shell: bash
+    run: |-
+      revcount=$(git rev-list --tags --count)
+      echo "revcount=${revcount}"
+      echo "revcount=${revcount}" >> $GITHUB_OUTPUT
+  - shell: bash
+    run: |-
+      echo "revcount=${{ steps.get-revcount.outputs.revcount }}"
+  - id: generate-tag
+    shell: bash
+    run: |-
+      prerelease="${{ inputs.prerelease }}"
+      buildmeta="${{ inputs.buildmeta }}"
+      version="${{ inputs.version }}"
+
+      if [[ -n ${prerelease} ]]; then
+        version="${version}-${prerelease}
+      fi
+
+      if [[ ${{ inputs.add-revcount }} ]]; then
+        version="${version}.${{ steps.get-revcount.outputs.revcount }}"
+      fi
+
+      if [[ -n ${buildmeta} ]]; then
+        version="${version}+${buildmeta}"
+      fi
+
+      echo "version='${version}'" >> $GITHUB_OUTPUT
