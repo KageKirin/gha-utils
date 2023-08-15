@@ -51,3 +51,6 @@ runs:
       fi
 
       echo "version='${version}'" >> $GITHUB_OUTPUT
+  - shell: bash
+    run: |-
+      echo "generated version: ${{ steps.generate-tag.outputs.version }}"
