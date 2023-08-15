@@ -1,6 +1,12 @@
 name: checkout-tags
 description: 'Checkout a Git repository at a particular version, with tags'
 inputs:
+  username:
+    description: 'Git user name'
+    default: ${{ github.triggering_actor }}
+  useremail:
+    description: 'Git user email'
+    default: ${{ github.actor }}@github.com
   repository:
     description: 'Repository name with owner. For example, actions/checkout'
     default: ${{ github.repository }}
@@ -116,3 +122,8 @@ runs:
       else
         git -C ${repoPath} fetch --tags
       fi
+  - name: Setup user
+    shell: bash
+    run: |-
+      git config --local user.name "${{ inputs.username }}"
+      git config --local user.email ${{ inputs.useremail }}
