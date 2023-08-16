@@ -20,19 +20,22 @@ runs:
   using: composite
   steps:
   - name: Push tag
-    shell: bash
+    shell: pwsh
     env:
       GH_TOKEN: ${{ github.token }}
     run: |-
-      if [[ $(${{ inputs.dry-run }}) ]]; then
-        dryrun="--dry-run"
+      if (${{ inputs.dry-run }})
+      {
+        $dryrun="--dry-run"
+      }
       else
-        dryrun=""
-      fi
-      echo "dryrun: ${dryrun}"
+      {
+        $dryrun=""
+      }
+      Write-Output "dryrun: $dryrun"
 
-      pushd ${{ inputs.path }}
-      git push --force-with-lease --verbose ${dryrun} ${{ inputs.remote }} ${{ inputs.branch }}
-      git push --force-with-lease --verbose ${dryrun} --follow-tags ${{ inputs.remote }} ${{ inputs.branch }}
-      git push --force-with-lease --verbose ${dryrun} --tags ${{ inputs.remote }}
-      popd
+      Push-Location ${{ inputs.path }}
+      git push --force-with-lease --verbose $dryrun ${{ inputs.remote }} ${{ inputs.branch }}
+      git push --force-with-lease --verbose $dryrun --follow-tags ${{ inputs.remote }} ${{ inputs.branch }}
+      git push --force-with-lease --verbose $dryrun --tags ${{ inputs.remote }}
+      Pop-Location
