@@ -32,25 +32,29 @@ runs:
     run: |-
       echo "revcount=${{ steps.get-revcount.outputs.revcount }}"
   - id: generate-tag
-    shell: bash
+    shell: pwsh
     run: |-
-      prerelease="${{ inputs.prerelease }}"
-      buildmeta="${{ inputs.buildmeta }}"
-      version="${{ inputs.version }}"
+      $prerelease = "${{ inputs.prerelease }}"
+      $buildmeta = "${{ inputs.buildmeta }}"
+      $version = "${{ inputs.version }}"
 
-      if [[ -n ${prerelease} ]]; then
-        version="${version}-${prerelease}
-      fi
+      if (! [string]::IsNullOrEmpty($prerelease))
+      {
+        $version = "$version-$prerelease"
+      }
 
-      if [[ ${{ inputs.add-revcount }} ]]; then
-        version="${version}.${{ steps.get-revcount.outputs.revcount }}"
-      fi
+      if ($${{ inputs.add-revcount }})
+      {
+        $version = "$version.${{ steps.get-revcount.outputs.revcount }}"
+      }
 
-      if [[ -n ${buildmeta} ]]; then
-        version="${version}+${buildmeta}"
-      fi
+      if (! [string]::IsNullOrEmpty($buildmeta))
+      {
+        $version = "$version+$buildmeta"
+      }
 
-      echo "version='${version}'" >> $GITHUB_OUTPUT
+      echo "version=$version"
+      echo "version=$version" >> $Env:GITHUB_OUTPUT
   - shell: bash
     run: |-
       echo "generated version: ${{ steps.generate-tag.outputs.version }}"
