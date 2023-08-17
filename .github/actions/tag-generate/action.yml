@@ -23,11 +23,11 @@ runs:
   using: composite
   steps:
   - id: get-revcount
-    shell: bash
+    shell: pwsh
     run: |-
-      revcount=$(git rev-list --tags --count)
-      echo "revcount=${revcount}"
-      echo "revcount=${revcount}" >> $GITHUB_OUTPUT
+      $revcount = @(git rev-list --tags --count)
+      echo "revcount=$revcount"
+      echo "revcount=$revcount" >> $Env:GITHUB_OUTPUT
   - shell: bash
     run: |-
       echo "revcount=${{ steps.get-revcount.outputs.revcount }}"
