@@ -28,7 +28,7 @@ runs:
       $revcount = @(git rev-list --tags --count)
       echo "revcount=$revcount"
       echo "revcount=$revcount" >> $Env:GITHUB_OUTPUT
-  - shell: bash
+  - shell: pwsh
     run: |-
       echo "revcount=${{ steps.get-revcount.outputs.revcount }}"
   - id: generate-tag
