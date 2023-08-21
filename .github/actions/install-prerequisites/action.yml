@@ -6,7 +6,7 @@ runs:
     shell: bash
     run: |-
       sudo apt-get update -y -qq
-      sudo apt-get install -y fd-find ripgrep curl wget sed moreutils jq apt-utils zsh snapd
+      sudo apt-get install -y fd-find ripgrep cowsay curl wget sed moreutils jq apt-utils zsh dos2unix snapd
       sudo snap install yq
       curl -sSL https://bit.ly/install-xq | sudo bash
   - name: Verify installation
