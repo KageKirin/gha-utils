@@ -19,25 +19,25 @@ inputs:
 runs:
   using: composite
   steps:
-  - name: Push tag
+  - name: Push tag (dry run)
+    if: ${{ inputs.dry-run == true }}
     shell: pwsh
     env:
       GH_TOKEN: ${{ github.token }}
     run: |-
-      $do_dryrun = "${{ inputs.dry-run }}"
-      Write-Output "dryrun: $do_dryrun"
-
       Push-Location ${{ inputs.path }}
-      if ($do_dryrun -eq "true")
-      {
-        git push --force-with-lease --verbose --dry-run ${{ inputs.remote }} ${{ inputs.branch }}
-        git push --force-with-lease --verbose --dry-run --follow-tags ${{ inputs.remote }} ${{ inputs.branch }}
-        git push --force-with-lease --verbose --dry-run --tags ${{ inputs.remote }}
-      }
-      else
-      {
-        git push --force-with-lease --verbose           ${{ inputs.remote }} ${{ inputs.branch }}
-        git push --force-with-lease --verbose           --follow-tags ${{ inputs.remote }} ${{ inputs.branch }}
-        git push --force-with-lease --verbose           --tags ${{ inputs.remote }}
-      }
+      git push --force-with-lease --verbose --dry-run ${{ inputs.remote }} ${{ inputs.branch }}
+      git push --force-with-lease --verbose --dry-run --follow-tags ${{ inputs.remote }} ${{ inputs.branch }}
+      git push --force-with-lease --verbose --dry-run --tags ${{ inputs.remote }}
+      Pop-Location
+  - name: Push tag (for real)
+    if: ${{ inputs.dry-run == false }}
+    shell: pwsh
+    env:
+      GH_TOKEN: ${{ github.token }}
+    run: |-
+      Push-Location ${{ inputs.path }}
+      git push --force-with-lease --verbose           ${{ inputs.remote }} ${{ inputs.branch }}
+      git push --force-with-lease --verbose           --follow-tags ${{ inputs.remote }} ${{ inputs.branch }}
+      git push --force-with-lease --verbose           --tags ${{ inputs.remote }}
       Pop-Location
