@@ -24,15 +24,20 @@ runs:
     env:
       GH_TOKEN: ${{ github.token }}
     run: |-
-      if (${{ inputs.dry-run }})
-      {
-        $dryrun = '--dry-run'
-      }
-
-      Write-Output "dryrun: $dryrun"
+      $do_dryrun = "${{ inputs.dry-run }}"
+      Write-Output "dryrun: $do_dryrun"
 
       Push-Location ${{ inputs.path }}
-      git push --force-with-lease --verbose $dryrun ${{ inputs.remote }} ${{ inputs.branch }}
-      git push --force-with-lease --verbose $dryrun --follow-tags ${{ inputs.remote }} ${{ inputs.branch }}
-      git push --force-with-lease --verbose $dryrun --tags ${{ inputs.remote }}
+      if ($do_dryrun -eq "true")
+      {
+        git push --force-with-lease --verbose --dry-run ${{ inputs.remote }} ${{ inputs.branch }}
+        git push --force-with-lease --verbose --dry-run --follow-tags ${{ inputs.remote }} ${{ inputs.branch }}
+        git push --force-with-lease --verbose --dry-run --tags ${{ inputs.remote }}
+      }
+      else
+      {
+        git push --force-with-lease --verbose           ${{ inputs.remote }} ${{ inputs.branch }}
+        git push --force-with-lease --verbose           --follow-tags ${{ inputs.remote }} ${{ inputs.branch }}
+        git push --force-with-lease --verbose           --tags ${{ inputs.remote }}
+      }
       Pop-Location
