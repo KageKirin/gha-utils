@@ -24,7 +24,9 @@ runs:
     env:
       GH_TOKEN: ${{ github.token }}
     run: |-
-      $dryrun = ($${{ inputs.dry-run }}) ? '--dry-run' : ''
+      if ($${{ inputs.dry-run }})
+        $dryrun = '--dry-run'
+
       Write-Output "dryrun: $dryrun"
 
       Push-Location ${{ inputs.path }}
